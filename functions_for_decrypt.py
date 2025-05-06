@@ -41,8 +41,9 @@ def analyse_seqs(txt, min_seq_len, kolvo_top_del):
 
             deliteli_array.append(NOD)
 
-    # the most popular delitels
 
+
+    # the most popular delitels = vozmozghnaya dlina klucha
     freq_array = {}
     for d in deliteli_array:
         freq_array[d] = freq_array.get(d, 0) + 1
@@ -55,7 +56,23 @@ def analyse_seqs(txt, min_seq_len, kolvo_top_del):
         if i[0] > 1:
             top_delitels.append(i[0])
 
-    return top_delitels
+    lenghs_of_key = top_delitels
+
+    return lenghs_of_key
+
+def text_and_keys_analys(text, key_length):
+
+    groups = [''] * key_length
+    for i, char in enumerate(text):
+        groups[i % key_length] += char
+    print('__________________________')
+    print(groups)
+
+    return groups
+
+
+
+
 
 
 
