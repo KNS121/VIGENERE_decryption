@@ -1,6 +1,6 @@
 from math import gcd
 
-def analyse_seqs(txt, min_seq_len):
+def analyse_seqs(txt, min_seq_len, kolvo_top_del):
 
     #search repeat seqs
     seq_dict = {}
@@ -42,11 +42,20 @@ def analyse_seqs(txt, min_seq_len):
             deliteli_array.append(NOD)
 
     # the most popular delitels
+
     freq_array = {}
     for d in deliteli_array:
         freq_array[d] = freq_array.get(d, 0) + 1
 
-    return freq_array
+    sort_freq = sorted(freq_array.items(), key=lambda x: (-x[1], -x[0]))
+
+    top_delitels = []
+
+    for i in sort_freq[:kolvo_top_del]:
+        if i[0] > 1:
+            top_delitels.append(i[0])
+
+    return top_delitels
 
 
 
