@@ -1,4 +1,4 @@
-def find_seq_repeats(txt, min_seq_len):
+def analyse_seqs(txt, min_seq_len):
     seq_dict = {}
 
     for i in range(len(txt)-min_seq_len + 1):
@@ -9,10 +9,19 @@ def find_seq_repeats(txt, min_seq_len):
 
         seq_dict[seq].append(i)
 
-    result_dict = {}
+    result_dict_seq = {}
 
     for seq, positions in seq_dict.items():
         if len(positions) > 1:
-            result_dict[seq] = positions
+            result_dict_seq[seq] = positions
 
-    return result_dict
+
+    #dist between repeats
+    distances_between_repeats_array = []
+
+    for pos in seq_dict.values():
+        if len(pos) > 1:
+            for i in range(1, len(pos)):
+                distances_between_repeats_array.append(pos[i] - pos[0])
+
+    return distances_between_repeats_array
