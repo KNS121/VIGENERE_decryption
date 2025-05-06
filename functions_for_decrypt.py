@@ -33,7 +33,6 @@ def analyse_seqs(txt, min_seq_len):
     # search NOD
     deliteli_array = []
 
-
     for i in range(len(distances_between_repeats_array)):
         for j in range(i + 1, len(distances_between_repeats_array)):
 
@@ -42,4 +41,12 @@ def analyse_seqs(txt, min_seq_len):
 
             deliteli_array.append(NOD)
 
-    return deliteli_array
+    # the most popular delitels
+    freq_array = {}
+    for d in deliteli_array:
+        freq_array[d] = freq_array.get(d, 0) + 1
+
+    return freq_array
+
+
+
