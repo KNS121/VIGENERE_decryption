@@ -7,4 +7,4 @@ def read_txt(filename):
     full_text = re.sub('[^а-яё]', '', full_text)
     return full_text
 
-print(read_txt("Vigenere.txt"))
+#print(read_txt("Vigenere.txt"))
