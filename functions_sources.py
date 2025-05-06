@@ -7,5 +7,4 @@ def read_txt(filename):
     full_text = re.sub('[^а-яё]', '', full_text)
     return full_text
 
-def read_frequency_russian_literal(dict_file_name):
-    return dict
+print(read_txt("Vigenere.txt"))
