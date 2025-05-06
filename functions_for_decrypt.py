@@ -1,4 +1,8 @@
+from math import gcd
+
 def analyse_seqs(txt, min_seq_len):
+
+    #search repeat seqs
     seq_dict = {}
 
     for i in range(len(txt)-min_seq_len + 1):
@@ -24,4 +28,18 @@ def analyse_seqs(txt, min_seq_len):
             for i in range(1, len(pos)):
                 distances_between_repeats_array.append(pos[i] - pos[0])
 
-    return distances_between_repeats_array
+
+
+    # search NOD
+    deliteli_array = []
+
+
+    for i in range(len(distances_between_repeats_array)):
+        for j in range(i + 1, len(distances_between_repeats_array)):
+
+            NOD = gcd(distances_between_repeats_array[i],
+                      distances_between_repeats_array[j])
+
+            deliteli_array.append(NOD)
+
+    return deliteli_array
