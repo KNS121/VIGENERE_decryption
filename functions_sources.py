@@ -4,12 +4,11 @@ def read_txt(filename):
     with open(filename, 'r', encoding='utf-8') as file:
         full_text = file.read()
         full_text = full_text.lower()
-    full_text = re.sub('[^а-яё]', '', full_text)
+
     return full_text
 
-#print(read_txt("Vigenere.txt"))
 
-alphavit = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя'
+alfavit = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя'
 
 def freq_language_analys_get(filename):
 
@@ -22,3 +21,6 @@ def freq_language_analys_get(filename):
                 frequencies[char] = float(freq)
 
     return frequencies
+
+def clean_txt(text):
+    return re.sub('[^а-яё]', '', text.lower())

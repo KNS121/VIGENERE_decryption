@@ -1,0 +1,8 @@
+Searched len of key: [2, 3, 17]
+len 2: key 'ёё' - error of freq 65.81486%
+len 3: key 'ёёё' - error of freq 65.81486%
+len 17: key 'иёмжоькхмйвфтуэёс' - error of freq 94.56281%
+
+the best key: иёмжоькхмйвфтуэёс
+error of freq: 94.56%
+decrypted text was saved in decrypted_text.txt

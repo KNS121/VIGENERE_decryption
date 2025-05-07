@@ -1,5 +1,7 @@
 import math
 from math import gcd
+from functions_sources import alfavit, read_txt, freq_language_analys_get, clean_txt
+
 
 def analyse_seqs(txt, min_seq_len, kolvo_top_del):
 
@@ -59,7 +61,12 @@ def analyse_seqs(txt, min_seq_len, kolvo_top_del):
 
     lenghs_of_key = top_delitels
 
-    return lenghs_of_key
+    unique_lens = []
+    for length in sorted(lenghs_of_key):
+        if not any(length % l == 0 and l != length for l in unique_lens):
+            unique_lens.append(length)
+
+    return unique_lens[:kolvo_top_del]
 
 def get_groups_by_key_lengths(text, key_length):
 
@@ -69,28 +76,100 @@ def get_groups_by_key_lengths(text, key_length):
 
     return groups
 
-def search_sdvig(alfavit, freqs_in_language, group):
 
+def search_sdvig(alfavit, freqs_in_language, group):
     sdvig = 0
     literal_freq = -math.inf
     len_alfavit = len(alfavit)
 
     for current_sdvig in range(len_alfavit):
         current_literal_freq = 0
-
         for literal in group:
-
-            # reverse Vigenere
-            original_index = ((alfavit.index(literal) - current_sdvig) % len_alfavit)
+            #reverse Vigenere
+            original_index = (alfavit.index(literal) - current_sdvig) % len_alfavit
             original_char = alfavit[original_index]
-
-            current_literal_freq = current_literal_freq + freqs_in_language.get(original_char, 0)
+            current_literal_freq += freqs_in_language.get(original_char, 0)
 
         if current_literal_freq > literal_freq:
             literal_freq = current_literal_freq
             sdvig = current_sdvig
-
     return sdvig
+
+
+def decrypt_text(original_text, key, alfavit):
+
+    decrypted = []
+    key_indices = [alfavit.index(k) for k in key]
+    key_len = len(key)
+    key_pos = 0
+
+    for literal in original_text:
+        if literal.lower() in alfavit:
+            decrypt_idx = alfavit.index(literal.lower())
+            original_idx = (decrypt_idx - key_indices[key_pos % key_len]) % len(alfavit)
+            decrypted_char = alfavit[original_idx]
+            decrypted.append(decrypted_char.upper() if literal.isupper() else decrypted_char)
+            key_pos += 1
+
+        else:
+            decrypted.append(literal)
+
+    return ''.join(decrypted)
+
+
+def calculate_err(decrypted_text, reference_freq):
+    text = clean_txt(decrypted_text)
+    total = max(len(text), 1)
+    current_freq = {char: text.count(char) / total for char in alfavit}
+
+    err = 0
+    for char in alfavit:
+        err += (current_freq.get(char, 0) - reference_freq.get(char, 0)) ** 2
+    return 1 / (1 + err)
+
+
+
+def calculate_accuracy(text, freqs):
+    clean = clean_txt(text)
+    total = len(clean) or 1
+    text_freq = {char: clean.count(char) / total for char in alfavit}
+    return sum(min(freq, text_freq[char]) for char, freq in freqs.items())
+
+
+def main_decrypt():
+    original_text = read_txt("Vigenere.txt")
+    clean_text = clean_txt(original_text)
+    freqs = freq_language_analys_get("freqs.txt")
+
+    key_lengths = analyse_seqs(clean_text, min_seq_len=3, kolvo_top_del=5)
+    print(f"Searched len of key: {key_lengths}")
+
+    best_key = None
+    best_score = 0
+
+    for length in key_lengths:
+
+        groups = get_groups_by_key_lengths(clean_text, length)
+        key = [alfavit[search_sdvig(alfavit, freqs, group)] for group in groups]
+        decrypted = decrypt_text(original_text, key, alfavit)
+
+        err = calculate_accuracy(decrypted, freqs)
+        print(f"len {length}: key '{''.join(key)}' - error of freq {err:.5%}")
+
+        if err > best_score:
+            best_score = err
+            best_key = key
+
+    # Save decrypted text
+    if best_key:
+        result = decrypt_text(original_text, best_key, alfavit)
+        with open("decrypted_text.txt", "w", encoding="utf-8") as f:
+            f.write(result)
+        print(f"\nthe best key: {''.join(best_key)}")
+        print(f"error of freq: {best_score:.2%}")
+        print("decrypted text was saved in decrypted_text.txt")
+    else:
+        print("Can't search key :((((")
 
 
 
