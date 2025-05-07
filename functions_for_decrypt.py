@@ -66,17 +66,32 @@ def get_groups_by_key_lengths(text, key_length):
     groups = [''] * key_length
     for i, char in enumerate(text):
         groups[i % key_length] += char
-    print('__________________________')
-    print(groups)
 
     return groups
 
-# def search_sdvig(alfavit, freqs_in_language, groups):
-#     err = math.inf
-#     alfavit_len = len(alfavit)
-#
-#     for sdvig in range(alfavit_len):
-#         err_fact =
+def search_sdvig(alfavit, freqs_in_language, group):
+
+    sdvig = 0
+    literal_freq = -math.inf
+    len_alfavit = len(alfavit)
+
+    for current_sdvig in range(len_alfavit):
+        current_literal_freq = 0
+
+        for literal in group:
+
+            # reverse Vigenere
+            original_index = ((alfavit.index(literal) - current_sdvig) % len_alfavit)
+            original_char = alfavit[original_index]
+
+            current_literal_freq = current_literal_freq + freqs_in_language.get(original_char, 0)
+
+        if current_literal_freq > literal_freq:
+            literal_freq = current_literal_freq
+            sdvig = current_sdvig
+
+    return sdvig
+
 
 
 
