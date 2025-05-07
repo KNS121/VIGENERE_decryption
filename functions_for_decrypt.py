@@ -1,3 +1,4 @@
+import math
 from math import gcd
 
 def analyse_seqs(txt, min_seq_len, kolvo_top_del):
@@ -60,7 +61,7 @@ def analyse_seqs(txt, min_seq_len, kolvo_top_del):
 
     return lenghs_of_key
 
-def text_and_keys_analys(text, key_length):
+def get_groups_by_key_lengths(text, key_length):
 
     groups = [''] * key_length
     for i, char in enumerate(text):
@@ -69,6 +70,14 @@ def text_and_keys_analys(text, key_length):
     print(groups)
 
     return groups
+
+# def search_sdvig(alfavit, freqs_in_language, groups):
+#     err = math.inf
+#     alfavit_len = len(alfavit)
+#
+#     for sdvig in range(alfavit_len):
+#         err_fact =
+
 
 
 

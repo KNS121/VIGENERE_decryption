@@ -8,3 +8,17 @@ def read_txt(filename):
     return full_text
 
 #print(read_txt("Vigenere.txt"))
+
+alphavit = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя'
+
+def freq_language_analys_get(filename):
+
+    frequencies = {}
+    with open(filename, 'r', encoding='utf-8') as file:
+        for line in file:
+            line = line.strip()
+            if line and not line.startswith('#'):
+                char, freq = line.split()
+                frequencies[char] = float(freq)
+
+    return frequencies
